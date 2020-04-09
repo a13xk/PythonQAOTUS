@@ -1,5 +1,7 @@
+import random
+import string
+
 import pytest
-import random, string
 
 
 def generate_random_string(string_length: int):

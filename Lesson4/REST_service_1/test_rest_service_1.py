@@ -2,6 +2,9 @@ import pytest
 
 
 class TestDogAPI:
+    """
+    Sample tests for Dog API https://dog.ceo/dog-api/
+    """
 
     def test_list_all_breeds(self, api_client):
         """

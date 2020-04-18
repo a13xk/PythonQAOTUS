@@ -26,7 +26,7 @@ class APIClient:
 #
 
 
-# Тестовое API: https://dog.ceo/dog-api/
+# Тестовый API: https://dog.ceo/dog-api/
 def pytest_addoption(parser):
     parser.addoption(
         "--url",

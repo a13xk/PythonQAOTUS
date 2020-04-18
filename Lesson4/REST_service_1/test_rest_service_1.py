@@ -12,6 +12,10 @@ class TestDogAPI:
         """
         endpoint = "/breeds/list/all"
         res = api_client.get(path=endpoint)
+
+        # Check status code
+        assert res.status_code == 200
+
         res_json = res.json()
 
         # Check status
@@ -28,6 +32,10 @@ class TestDogAPI:
         """
         endpoint = "/breeds/image/random"
         res = api_client.get(path=endpoint)
+
+        # Check status code
+        assert res.status_code == 200
+
         res_json = res.json()
 
         # Check status
@@ -59,6 +67,10 @@ class TestDogAPI:
         """
         endpoint = f"/breeds/image/random/{str(number)}"
         res = api_client.get(path=endpoint)
+
+        # Check status code
+        assert res.status_code == 200
+
         res_json = res.json()
 
         # Check status
@@ -95,6 +107,10 @@ class TestDogAPI:
         """
         endpoint = f"/breed/{breed}/images"
         res = api_client.get(path=endpoint)
+
+        # Check status code
+        assert res.status_code == 200
+
         res_json = res.json()
 
         # Check status
@@ -131,6 +147,10 @@ class TestDogAPI:
         breed, exists, has_sub_breeds = breeds
         endpoint = f"/breed/{breed}/list"
         res = api_client.get(path=endpoint)
+
+        # Check status code
+        assert res.status_code == 200
+
         res_json = res.json()
 
         # Check status

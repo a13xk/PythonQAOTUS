@@ -148,13 +148,12 @@ class TestDogAPI:
         endpoint = f"/breed/{breed}/list"
         res = api_client.get(path=endpoint)
 
-        # Check status code
-        assert res.status_code == 200
-
-        res_json = res.json()
-
         # Check status
         if exists:
+            # Check status code
+            assert res.status_code == 200
+
+            res_json = res.json()
             assert res_json.get("status") == "success"
 
             # Check type of 'message' key
@@ -167,6 +166,7 @@ class TestDogAPI:
                 assert len(message) == 0, f"Incorrect length of 'messages' list. Expected 0, got {len(message)}"
 
         else:
-            assert res_json.get("status") == "error"
+            # Check status code
+            assert res.status_code == 404
     #
 #

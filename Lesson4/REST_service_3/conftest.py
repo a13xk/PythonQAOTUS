@@ -38,7 +38,7 @@ class APIClient:
 #
 
 
-# Тестовый API 2: https://www.openbrewerydb.org
+# Тестовый API 3: https://jsonplaceholder.typicode.com
 def pytest_addoption(parser):
     parser.addoption(
         "--url",

@@ -15,6 +15,11 @@ class Rectangle(GeometricFigure):
                 raise ValueError(f"Invalid type of rectangle side A: {type(self.side_a)}")
             if type(self.side_b) != float:
                 raise ValueError(f"Invalid type of rectangle side B: {type(self.side_b)}")
+
+            if self.side_a <= 0.0:
+                raise ValueError(f"Invalid value of rectangle side A: {self.side_a}")
+            if self.side_b <= 0.0:
+                raise ValueError(f"Invalid value of rectangle side B: {self.side_b}")
     #
 
     def area(self) -> float:

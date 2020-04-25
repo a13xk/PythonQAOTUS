@@ -5,6 +5,7 @@ class GeometricFigure:
         self.angles: int = angles
     #
 
+    @property
     def area(self) -> float:
         """
         Area of geometric figure
@@ -12,6 +13,7 @@ class GeometricFigure:
         return 0.0
     #
 
+    @property
     def perimeter(self) -> float:
         """
         Perimeter of geometric figure

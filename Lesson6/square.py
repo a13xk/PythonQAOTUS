@@ -16,10 +16,12 @@ class Square(GeometricFigure):
                 raise ValueError(f"Invalid value of square side A: {self.side_a}")
     #
 
+    @property
     def area(self) -> float:
         return self.side_a * self.side_a
     #
 
+    @property
     def perimeter(self) -> float:
         return (self.side_a + self.side_a) * 2
     #

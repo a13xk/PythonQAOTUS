@@ -22,10 +22,12 @@ class Rectangle(GeometricFigure):
                 raise ValueError(f"Invalid value of rectangle side B: {self.side_b}")
     #
 
+    @property
     def area(self) -> float:
         return self.side_a * self.side_b
     #
 
+    @property
     def perimeter(self) -> float:
         return (self.side_a + self.side_b) * 2
     #

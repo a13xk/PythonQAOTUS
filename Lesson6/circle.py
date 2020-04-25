@@ -17,10 +17,12 @@ class Circle(GeometricFigure):
                 raise ValueError(f"Invalid value of circle radius: {self.radius}")
     #
 
+    @property
     def area(self) -> float:
         return math.pi * (self.radius ** 2)
     #
 
+    @property
     def perimeter(self) -> float:
         return 2 * math.pi * self.radius
     #

@@ -13,7 +13,7 @@ class TestRectangle:
     @pytest.mark.parametrize(
         argnames="name,expected_name",
         argvalues=[
-            ("The circle", "The circle"),
+            ("The rectangle", "The rectangle"),
             (123, "123"),
             (None, "None")
         ]
@@ -64,7 +64,7 @@ class TestRectangle:
             (Triangle(name="Valid triangle", side_a=1.23, side_b=2.34, side_c=3.45), 4.697)
         ],
         ids=[
-            "Rectangle",
+            "Circle",
             "Square",
             "Triangle"
         ]

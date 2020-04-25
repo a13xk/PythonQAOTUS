@@ -4,8 +4,8 @@ from __future__ import annotations  # To use GeometricFigure as type hint below
 class GeometricFigure:
 
     def __init__(self, name: str, angles: int):
-        self.name: str = name
-        self.angles: int = angles
+        self.name: str = str(name)
+        self.angles: int = int(angles)
     #
 
     @property

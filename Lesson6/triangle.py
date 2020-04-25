@@ -47,16 +47,18 @@ class Triangle(GeometricFigure):
 
     #
 
+    @property
     def area(self) -> float:
         if self.triangle_is_equilateral:
             return self.side_a ** 2 * math.sqrt(3.0) / 4.0
         elif self.triangle_is_right:
             return self.leg_a * self.leg_b / 2.0
         else:
-            p = self.perimeter() / 2.0
+            p = self.perimeter / 2.0
             return math.sqrt(p * (p - self.side_a) * (p - self.side_b) * (p - self.side_c))
     #
 
+    @property
     def perimeter(self) -> float:
         return self.side_a + self.side_b + self.side_c
     #

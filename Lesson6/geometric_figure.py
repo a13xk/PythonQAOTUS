@@ -1,3 +1,6 @@
+from __future__ import annotations  # To use GeometricFigure as type hint below
+
+
 class GeometricFigure:
 
     def __init__(self, name: str, angles: int):
@@ -21,14 +24,14 @@ class GeometricFigure:
         return 0.0
     #
 
-    def add_area(self, figure):
+    def add_area(self, figure: GeometricFigure):
         """
         Calculate area of 2 figures
         :param figure: Object of GeometricFigure class
         """
-        if type(figure) != GeometricFigure:
+        if not issubclass(type(figure), GeometricFigure):
             raise NameError(f"Invalid type of object {figure}")
-        return self.area() + figure.area()
+        return self.area + figure.area
     #
 #
 

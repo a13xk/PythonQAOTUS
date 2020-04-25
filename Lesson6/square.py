@@ -12,6 +12,8 @@ class Square(GeometricFigure):
 
             if type(self.side_a) != float:
                 raise ValueError(f"Invalid type of square side A: {type(self.side_a)}")
+            if self.side_a <= 0.0:
+                raise ValueError(f"Invalid value of square side A: {self.side_a}")
     #
 
     def area(self) -> float:

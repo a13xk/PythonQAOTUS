@@ -1,9 +1,11 @@
 import math
+
 import pytest
+
+from Lesson6.circle import Circle
 from Lesson6.rectangle import Rectangle
 from Lesson6.square import Square
 from Lesson6.triangle import Triangle
-from Lesson6.circle import Circle
 
 
 class TestCircle:

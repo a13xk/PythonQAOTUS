@@ -15,6 +15,8 @@ class Circle(GeometricFigure):
                 raise ValueError(f"Invalid type of circle radius: {type(self.radius)}")
             if self.radius <= 0.0:
                 raise ValueError(f"Invalid value of circle radius: {self.radius}")
+        else:
+            raise NameError("Radius must specified to define a circle")
     #
 
     @property

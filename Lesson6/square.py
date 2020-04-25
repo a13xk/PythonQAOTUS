@@ -11,7 +11,7 @@ class Square(GeometricFigure):
             self.side_a = kwargs.get("side_a")  # Length of side A
 
             if type(self.side_a) != float:
-                raise ValueError(f"Invalid type of rectangle side A: {type(self.side_a)}")
+                raise ValueError(f"Invalid type of square side A: {type(self.side_a)}")
     #
 
     def area(self) -> float:

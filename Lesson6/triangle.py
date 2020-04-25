@@ -64,6 +64,6 @@ class Triangle(GeometricFigure):
     #
 
     def add_area(self, figure):
-        super().add_area(figure=figure)
+        return super().add_area(figure=figure)
     #
 #

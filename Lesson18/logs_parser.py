@@ -129,13 +129,11 @@ if __name__ == '__main__':
                     "- Top 10 requests resulted with server error 5xx (include method, URL, status code, IP address)"
     )
     arg_parser.add_argument(
-        "-i",
         "--input",
         action="store",
         help="Path to directory with log files or path to specific log file"
     )
     arg_parser.add_argument(
-        "-o",
         "--output",
         action="store",
         help="Path to output JSON file where to save collected statistics"

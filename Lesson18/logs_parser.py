@@ -1,6 +1,8 @@
-import pathlib
 import argparse
+import pathlib
 import re
+from collections import Counter
+from typing import List
 
 
 class LogsParser:
@@ -69,6 +71,25 @@ class LogsParser:
             all_requests_by_type["PUT"] += r["PUT"]
             all_requests_by_type["DELETE"] += r["DELETE"]
         return all_requests_by_type
+    #
+
+    def get_top_10_ip_addresses(self) -> List[dict]:
+        pattern_ipv4 = re.compile(pattern=r"((?:\d{1,3}\.){3}\d{1,3})")
+        pattern_ipv6 = re.compile(pattern=r"((?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})")
+        ip_addresses = []
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                for line in f.readlines():
+                    match_ipv4 = pattern_ipv4.search(string=line)
+                    match_ipv6 = pattern_ipv6.search(string=line)
+                    if match_ipv4:
+                        ip_addresses.append(match_ipv4.group(1))
+                    if match_ipv6:
+                        ip_addresses.append(match_ipv6.group(1))
+        top_10_addresses = []
+        for ip in Counter(ip_addresses).most_common(n=10):
+            top_10_addresses.append({"ip": ip[0], "count": ip[1]})
+        return top_10_addresses
     #
 #
 

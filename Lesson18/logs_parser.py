@@ -9,12 +9,12 @@ class LogsParser:
 
     def __init__(self, logs_source: str, json_file: str):
         self.logs_source: pathlib.Path = pathlib.Path(logs_source)
-        self.json_file: pathlib.Path = pathlib.Path(json_file)
+        self.json_file: pathlib.Path = pathlib.Path(json_file).absolute()
 
         self.log_files = []
 
         if self.logs_source.is_dir():
-            self.log_files = sorted(list([log_file.absolute() for log_file in sorted(pathlib.Path(self.logs_source).glob("**/*"))]))
+            self.log_files = sorted(list([log_file.absolute() for log_file in sorted(self.logs_source.glob("**/*"))]))
         elif self.logs_source.is_file():
             self.log_files.append(self.logs_source.absolute())
         else:

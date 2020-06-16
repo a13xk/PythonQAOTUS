@@ -94,6 +94,25 @@ class LogsParser:
             top_10_addresses.append({"ip": ip[0], "count": ip[1]})
         return top_10_addresses
     #
+
+    def get_top_10_longest_requests(self) -> List[dict]:
+        all_requests = []
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                for line in f.readlines():
+                    match = self.LOG_LINE_PATTERN.search(string=line)
+                    if match:
+                        all_requests.append(
+                            {
+                                "method": match.group(2),
+                                "url": match.group(3),
+                                "ip": match.group(1),
+                                "duration": int(match.group(5))
+                            }
+                        )
+        top_10_longest = sorted(all_requests, key=lambda d: d["duration"], reverse=True)[0:10]
+        return top_10_longest
+    #
 #
 
 

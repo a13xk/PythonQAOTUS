@@ -17,6 +17,15 @@ class LogsParser:
         else:
             raise FileExistsError("Incorrect path to source folder or log file")
     #
+
+    def get_total_number_of_requests(self) -> int:
+        total = 0
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                line_count = sum(1 for line in f if line != "")
+            total += line_count
+        return total
+    #
 #
 
 

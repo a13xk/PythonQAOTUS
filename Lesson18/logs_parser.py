@@ -19,6 +19,14 @@ class LogsParser:
             self.log_files.append(self.logs_source.absolute())
         else:
             raise FileExistsError("Incorrect path to source folder or log file")
+        # Group 1: IPv4/6
+        # Group 2: HTTP method
+        # Group 4: response code
+        # Group 1: request duration
+        self.LOG_LINE_PATTERN = re.compile(
+            pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+\/.*?\s+HTTP\/1\.1"\s+(\d+)\s+(\d+)',
+            flags=re.IGNORECASE
+        )
     #
 
     def get_total_number_of_requests(self) -> int:
@@ -43,9 +51,9 @@ class LogsParser:
                     "DELETE": 0
                 }
                 for line in f.readlines():
-                    match = pattern_request_type.search(string=line)
+                    match = self.LOG_LINE_PATTERN.search(string=line)
                     if match:
-                        request_type = match.group(1)
+                        request_type = match.group(2)
                         if request_type == "GET":
                             requests_by_type["GET"] += 1
                         if request_type == "HEAD":
@@ -74,18 +82,13 @@ class LogsParser:
     #
 
     def get_top_10_ip_addresses(self) -> List[dict]:
-        pattern_ipv4 = re.compile(pattern=r"((?:\d{1,3}\.){3}\d{1,3})")
-        pattern_ipv6 = re.compile(pattern=r"((?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})")
         ip_addresses = []
         for log_file in self.log_files:
             with open(file=str(log_file), mode="r") as f:
                 for line in f.readlines():
-                    match_ipv4 = pattern_ipv4.search(string=line)
-                    match_ipv6 = pattern_ipv6.search(string=line)
-                    if match_ipv4:
-                        ip_addresses.append(match_ipv4.group(1))
-                    if match_ipv6:
-                        ip_addresses.append(match_ipv6.group(1))
+                    match = self.LOG_LINE_PATTERN.search(string=line)
+                    if match:
+                        ip_addresses.append(match.group(1))
         top_10_addresses = []
         for ip in Counter(ip_addresses).most_common(n=10):
             top_10_addresses.append({"ip": ip[0], "count": ip[1]})

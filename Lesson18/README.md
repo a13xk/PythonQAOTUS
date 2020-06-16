@@ -28,5 +28,5 @@ python logs_parser -h
 
 Пример обработки лога `nginx_logs.txt` из папки `logs_example`:
 ```bash
-python logs_parser --input ./logs_example/nginx_logs.txt --output report.json
+python logs_parser.py --input ./logs_example/nginx_logs.txt --output report.json
 ```

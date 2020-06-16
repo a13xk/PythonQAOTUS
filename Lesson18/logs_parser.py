@@ -1,5 +1,6 @@
 import pathlib
 import argparse
+import re
 
 
 class LogsParser:
@@ -25,6 +26,49 @@ class LogsParser:
                 line_count = sum(1 for line in f if line != "")
             total += line_count
         return total
+    #
+
+    def get_requests_by_type(self) -> dict:
+        all_requests = []
+        pattern_request_type = re.compile(pattern=r'\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+', flags=re.IGNORECASE)
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                requests_by_type = {
+                    "GET": 0,
+                    "HEAD": 0,
+                    "POST": 0,
+                    "PUT": 0,
+                    "DELETE": 0
+                }
+                for line in f.readlines():
+                    match = pattern_request_type.search(string=line)
+                    if match:
+                        request_type = match.group(1)
+                        if request_type == "GET":
+                            requests_by_type["GET"] += 1
+                        if request_type == "HEAD":
+                            requests_by_type["HEAD"] += 1
+                        if request_type == "POST":
+                            requests_by_type["POST"] += 1
+                        if request_type == "PUT":
+                            requests_by_type["PUT"] += 1
+                        if request_type == "DELETE":
+                            requests_by_type["DELETE"] += 1
+            all_requests.append(requests_by_type)
+        all_requests_by_type = {
+            "GET": 0,
+            "HEAD": 0,
+            "POST": 0,
+            "PUT": 0,
+            "DELETE": 0
+        }
+        for r in all_requests:
+            all_requests_by_type["GET"] += r["GET"]
+            all_requests_by_type["HEAD"] += r["HEAD"]
+            all_requests_by_type["POST"] += r["POST"]
+            all_requests_by_type["PUT"] += r["PUT"]
+            all_requests_by_type["DELETE"] += r["DELETE"]
+        return all_requests_by_type
     #
 #
 

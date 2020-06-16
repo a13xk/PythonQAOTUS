@@ -21,10 +21,11 @@ class LogsParser:
             raise FileExistsError("Incorrect path to source folder or log file")
         # Group 1: IPv4/6
         # Group 2: HTTP method
+        # Group 3: URL
         # Group 4: response code
-        # Group 1: request duration
+        # Group 5: request duration
         self.LOG_LINE_PATTERN = re.compile(
-            pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+\/.*?\s+HTTP\/1\.1"\s+(\d+)\s+(\d+)',
+            pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+(\/.*?)\s+HTTP\/1\.1"\s+(\d+)\s+(\d+)',
             flags=re.IGNORECASE
         )
     #
@@ -40,7 +41,6 @@ class LogsParser:
 
     def get_requests_by_type(self) -> dict:
         all_requests = []
-        pattern_request_type = re.compile(pattern=r'\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+', flags=re.IGNORECASE)
         for log_file in self.log_files:
             with open(file=str(log_file), mode="r") as f:
                 requests_by_type = {

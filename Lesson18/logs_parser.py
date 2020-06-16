@@ -1,4 +1,5 @@
 import argparse
+import json
 import pathlib
 import re
 from collections import Counter
@@ -28,6 +29,17 @@ class LogsParser:
             pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+(\/.*?)\s+HTTP\/1\.1"\s+(\d+)\s+(\d+)',
             flags=re.IGNORECASE
         )
+    #
+
+    def save_report(self):
+        with open(file=str(self.json_file), mode="w") as f:
+            data = {
+                "requests_total": self.get_total_number_of_requests(),
+                "requests_by_type": self.get_requests_by_type(),
+                "top_10_ip_addresses": self.get_top_10_ip_addresses(),
+                "top_10_longest_requests": self.get_top_10_longest_requests()
+            }
+            f.write(json.dumps(data, indent=4))
     #
 
     def get_total_number_of_requests(self) -> int:
@@ -139,4 +151,7 @@ if __name__ == '__main__':
         help="Path to output JSON file where to save collected statistics"
     )
     args = arg_parser.parse_args()
+
+    logs_parser = LogsParser(logs_source=args.input, json_file=args.output)
+    logs_parser.save_report()
 #

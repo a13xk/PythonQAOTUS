@@ -26,7 +26,7 @@ class LogsParser:
         # Group 4: response code
         # Group 5: request duration
         self.LOG_LINE_PATTERN = re.compile(
-            pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4})\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE)\s+(\/.*?)\s+HTTP\/1\.1"\s+(\d+)\s+(\d+)',
+            pattern=r'((?:\d{1,3}\.){3}\d{1,3}|(?:[a-f0-9]{1,4}:){7}[a-f0-9]{1,4}|::\d)\s+-\s+-\s+\[.*?\+\d+\]\s+"(GET|HEAD|POST|PUT|DELETE|OPTIONS)\s+(\/?.*?)\s+HTTP\/1\.\d"\s+(\d+)\s+(\d+)',
             flags=re.IGNORECASE
         )
     #
@@ -60,7 +60,8 @@ class LogsParser:
                     "HEAD": 0,
                     "POST": 0,
                     "PUT": 0,
-                    "DELETE": 0
+                    "DELETE": 0,
+                    "OPTIONS": 0
                 }
                 for line in f.readlines():
                     match = self.LOG_LINE_PATTERN.search(string=line)
@@ -76,13 +77,16 @@ class LogsParser:
                             requests_by_type["PUT"] += 1
                         if request_type == "DELETE":
                             requests_by_type["DELETE"] += 1
+                        if request_type == "OPTIONS":
+                            requests_by_type["OPTIONS"] += 1
             all_requests.append(requests_by_type)
         all_requests_by_type = {
             "GET": 0,
             "HEAD": 0,
             "POST": 0,
             "PUT": 0,
-            "DELETE": 0
+            "DELETE": 0,
+            "OPTIONS": 0
         }
         for r in all_requests:
             all_requests_by_type["GET"] += r["GET"]

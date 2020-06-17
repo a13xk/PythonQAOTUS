@@ -152,21 +152,18 @@ class LogsParser:
                                     "duration": int(match.group(5))
                                 }
                             )
-        client_error_urls = []
-        for url, _ in itertools.groupby(client_error_requests, key=itemgetter("url")):
-            client_error_urls.append(url)
+        url_and_status = {f'{error.get("url")} === {error.get("status")}' for error in client_error_requests}
 
         res_list = []
-        for url in client_error_urls:
-            for err in client_error_requests:
-                if url == err.get("url"):
-                    res_list.append(
-                        {
-                            "url": url,
-                            "status": err.get("status")
-                        }
-                    )
-                    break
+        for us in url_and_status:
+            res_list.append(
+                {
+                    "url": us.split(sep=" === ")[0],
+                    "status": us.split(sep=" === ")[1]
+                }
+            )
+        if len(res_list) > 10:
+            res_list = res_list[0:10]
         return res_list
     #
 
@@ -186,21 +183,18 @@ class LogsParser:
                                     "ip": match.group(1),
                                 }
                             )
-        server_error_urls = []
-        for url, _ in itertools.groupby(server_error_requests, key=itemgetter("url")):
-            server_error_urls.append(url)
+        url_and_status = {f'{error.get("url")} === {error.get("status")}' for error in server_error_requests}
 
         res_list = []
-        for url in server_error_urls:
-            for err in server_error_requests:
-                if url == err.get("url"):
-                    res_list.append(
-                        {
-                            "url": url,
-                            "status": err.get("status")
-                        }
-                    )
-                    break
+        for us in url_and_status:
+            res_list.append(
+                {
+                    "url": us.split(sep=" === ")[0],
+                    "status": us.split(sep=" === ")[1]
+                }
+            )
+        if len(res_list) > 10:
+            res_list = res_list[0:10]
         return res_list
     #
 #
@@ -231,5 +225,6 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     logs_parser = LogsParser(logs_source=args.input, json_file=args.output)
+    # logs_parser.get_top_10_client_error_requests()
     logs_parser.save_report()
 #

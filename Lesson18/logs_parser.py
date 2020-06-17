@@ -225,6 +225,5 @@ if __name__ == '__main__':
     args = arg_parser.parse_args()
 
     logs_parser = LogsParser(logs_source=args.input, json_file=args.output)
-    # logs_parser.get_top_10_client_error_requests()
     logs_parser.save_report()
 #

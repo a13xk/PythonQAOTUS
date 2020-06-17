@@ -40,7 +40,8 @@ class LogsParser:
                 "requests_by_type": self.get_requests_by_type(),
                 "top_10_ip_addresses": self.get_top_10_ip_addresses(),
                 "top_10_longest_requests": self.get_top_10_longest_requests(),
-                "top_10_client_error_requests": self.get_top_10_client_error_requests()
+                "top_10_client_error_requests": self.get_top_10_client_error_requests(),
+                "top_10_server_error_requests": self.get_top_10_server_error_requests()
             }
             f.write(json.dumps(data, indent=4))
     #
@@ -158,6 +159,40 @@ class LogsParser:
         res_list = []
         for url in client_error_urls:
             for err in client_error_requests:
+                if url == err.get("url"):
+                    res_list.append(
+                        {
+                            "url": url,
+                            "status": err.get("status")
+                        }
+                    )
+                    break
+        return res_list
+    #
+
+    def get_top_10_server_error_requests(self) -> List[dict]:
+        server_error_requests = []
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                for line in f.readlines():
+                    match = self.LOG_LINE_PATTERN.search(string=line)
+                    if match:
+                        if 500 <= int(match.group(4)) < 600:
+                            server_error_requests.append(
+                                {
+                                    "method": match.group(2),
+                                    "url": match.group(3),
+                                    "status": int(match.group(4)),
+                                    "ip": match.group(1),
+                                }
+                            )
+        server_error_urls = []
+        for url, _ in itertools.groupby(server_error_requests, key=itemgetter("url")):
+            server_error_urls.append(url)
+
+        res_list = []
+        for url in server_error_urls:
+            for err in server_error_requests:
                 if url == err.get("url"):
                     res_list.append(
                         {

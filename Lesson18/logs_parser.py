@@ -1,8 +1,10 @@
 import argparse
+import itertools
 import json
 import pathlib
 import re
 from collections import Counter
+from operator import itemgetter
 from typing import List
 
 
@@ -37,7 +39,8 @@ class LogsParser:
                 "requests_total": self.get_total_number_of_requests(),
                 "requests_by_type": self.get_requests_by_type(),
                 "top_10_ip_addresses": self.get_top_10_ip_addresses(),
-                "top_10_longest_requests": self.get_top_10_longest_requests()
+                "top_10_longest_requests": self.get_top_10_longest_requests(),
+                "top_10_client_error_requests": self.get_top_10_client_error_requests()
             }
             f.write(json.dumps(data, indent=4))
     #
@@ -94,6 +97,7 @@ class LogsParser:
             all_requests_by_type["POST"] += r["POST"]
             all_requests_by_type["PUT"] += r["PUT"]
             all_requests_by_type["DELETE"] += r["DELETE"]
+            all_requests_by_type["OPTIONS"] += r["OPTIONS"]
         return all_requests_by_type
     #
 
@@ -128,6 +132,41 @@ class LogsParser:
                         )
         top_10_longest = sorted(all_requests, key=lambda d: d["duration"], reverse=True)[0:10]
         return top_10_longest
+    #
+
+    def get_top_10_client_error_requests(self) -> List[dict]:
+        client_error_requests = []
+        for log_file in self.log_files:
+            with open(file=str(log_file), mode="r") as f:
+                for line in f.readlines():
+                    match = self.LOG_LINE_PATTERN.search(string=line)
+                    if match:
+                        if 400 <= int(match.group(4)) < 500:
+                            client_error_requests.append(
+                                {
+                                    "method": match.group(2),
+                                    "url": match.group(3),
+                                    "status": int(match.group(4)),
+                                    "ip": match.group(1),
+                                    "duration": int(match.group(5))
+                                }
+                            )
+        client_error_urls = []
+        for url, _ in itertools.groupby(client_error_requests, key=itemgetter("url")):
+            client_error_urls.append(url)
+
+        res_list = []
+        for url in client_error_urls:
+            for err in client_error_requests:
+                if url == err.get("url"):
+                    res_list.append(
+                        {
+                            "url": url,
+                            "status": err.get("status")
+                        }
+                    )
+                    break
+        return res_list
     #
 #
 

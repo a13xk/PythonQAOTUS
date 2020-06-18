@@ -1,10 +1,8 @@
 import argparse
-import itertools
 import json
 import pathlib
 import re
 from collections import Counter
-from operator import itemgetter
 from typing import List
 
 

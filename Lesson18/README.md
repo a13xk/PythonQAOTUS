@@ -30,3 +30,9 @@ python logs_parser -h
 ```bash
 python logs_parser.py --input ./logs_example/nginx_logs.txt --output report.json
 ```
+
+Пример обработки всех логов (предполагается, что в папке лежат логи в правильном формате) из папки `logs_example`:
+```bash
+python logs_parser.py --input ./logs_example/ --output report.json
+```
+

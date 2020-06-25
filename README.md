@@ -13,3 +13,4 @@
 * 2 месяц, модуль 9 - Поиск и действия с элементами - [ветка home_work_9](https://github.com/a13xk/PythonQAOtusSelenium/tree/home_work_9)
 
 * [Lesson18](./Lesson18) - 3 месяц, модуль 18 - Анализ логов веб-сервера
+* [Lesson21](./Lesson21) - 3 месяц, модуль 21 - Работа с сетью II

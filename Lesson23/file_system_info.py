@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import argparse
+import os
 import subprocess
 import sys
 
@@ -12,6 +13,7 @@ class FileSystemInfo:
         self.version: bool = cli_arguments.version
         self.show_all_processes: bool = cli_arguments.show_all_processes
         self.process_id: int = cli_arguments.process_id
+        self.directory: str = cli_arguments.list_files
 
         self.res_all_processes: str = ""
         self.res_process: str = ""
@@ -73,6 +75,31 @@ class FileSystemInfo:
         print("=== END ===\n")
         exit()
     #
+
+    def print_files_in_directory(self):
+        """
+        Print all files in given directory
+        """
+        if not self.directory or self.directory == ".":
+            self.directory = os.path.dirname(os.path.abspath(__file__))
+        if "~" in self.directory:
+            self.directory = os.path.expanduser(self.directory)
+        if not os.path.isdir(self.directory):
+            print(f"Directory specified by path '{self.directory}' does not exist")
+            exit()
+        else:
+            all_files = [os.path.join(self.directory, file) for file in os.listdir(path=self.directory)
+                         if os.path.isfile(os.path.join(self.directory, file))]
+            all_files = sorted(all_files, key=str.casefold)
+
+            print("=== Files in directory ===")
+            print(f"Directory:\n\t{self.directory}")
+            print("Files:")
+            for f in all_files:
+                print(f"\t{f}")
+            print("=== END ===\n")
+            exit()
+    #
 #
 
 
@@ -99,6 +126,15 @@ if __name__ == '__main__':
         type=int,
         help="show information on particular process with specified PID"
     )
+    parser.add_argument(
+        "--list-files",
+        metavar="DIR",
+        nargs="?",
+        const=".",
+        action="store",
+        type=str,
+        help="list files in given directory (current directory by default)"
+    )
 
     args = parser.parse_args()
 
@@ -114,4 +150,6 @@ if __name__ == '__main__':
         fs.print_all_processes()
     if fs.process_id:
         fs.print_process_info()
+    if fs.directory:
+        fs.print_files_in_directory()
 #

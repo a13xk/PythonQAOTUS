@@ -14,14 +14,17 @@ class FileSystemInfo:
         self.show_all_processes: bool = cli_arguments.show_all_processes
         self.process_id: int = cli_arguments.process_id
         self.directory: str = cli_arguments.list_files
+        self.show_kernel_release: bool = cli_arguments.show_kernel_release
 
         self.res_all_processes: str = ""
         self.res_process: str = ""
+        self.res_kernel_release: str = ""
     #
 
     def __del__(self):
         self.res_all_processes = ""
         self.res_process = ""
+        self.res_kernel_release = ""
     #
 
     def print_version(self):
@@ -100,6 +103,19 @@ class FileSystemInfo:
             print("=== END ===\n")
             exit()
     #
+
+    def print_kernel_release(self):
+        """
+        Print Linux kernel version
+        """
+        self.res_kernel_release = self.run_command_in_shell(command_args=[
+            "uname", "-r"
+        ])
+        print("=== Linux kernel version ===")
+        print(self.res_kernel_release)
+        print("=== END ===\n")
+        exit()
+    #
 #
 
 
@@ -135,6 +151,11 @@ if __name__ == '__main__':
         type=str,
         help="list files in given directory (current directory by default)"
     )
+    parser.add_argument(
+        "--show-kernel-release",
+        action="store_true",
+        help="show Linux kernel version"
+    )
 
     args = parser.parse_args()
 
@@ -152,4 +173,6 @@ if __name__ == '__main__':
         fs.print_process_info()
     if fs.directory:
         fs.print_files_in_directory()
+    if fs.show_kernel_release:
+        fs.print_kernel_release()
 #

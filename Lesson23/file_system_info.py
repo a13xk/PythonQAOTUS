@@ -87,7 +87,7 @@ class FileSystemInfo:
         Print all files in given directory
         """
         if not self.directory or self.directory == ".":
-            self.directory = os.path.dirname(os.path.abspath(__file__))
+            self.directory = os.path.abspath(os.getcwd())
         if "~" in self.directory:
             self.directory = os.path.expanduser(self.directory)
         if not os.path.isdir(self.directory):

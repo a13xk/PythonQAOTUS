@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import argparse
 import subprocess
+import sys
 
 
 class FileSystemInfo:
@@ -76,32 +77,35 @@ class FileSystemInfo:
 
 
 if __name__ == '__main__':
-    arg_parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(
         formatter_class=argparse.RawTextHelpFormatter,
         prog="file_system_info",
         description="Script interacting with Linux file system and process management"
     )
-    arg_parser.set_defaults(func=lambda x: arg_parser.print_help())
-
-    arg_parser.add_argument(
+    parser.add_argument(
         "-v", "--version",
         action="store_true",
         help="show version and exit"
     )
-    arg_parser.add_argument(
+    parser.add_argument(
         "--show-all-processes",
         action="store_true",
         help="list all running processes"
     )
-    arg_parser.add_argument(
+    parser.add_argument(
         "--process-id",
         metavar="PID",
         action="store",
         type=int,
         help="show information on particular process with specified PID"
     )
-    args = arg_parser.parse_args()
-    args.func(args)
+
+    args = parser.parse_args()
+
+    # Optional: display builtin help without -h|--help CLI options as well
+    if len(sys.argv) == 1:
+        parser.print_help()
+        exit()
 
     fs = FileSystemInfo(cli_arguments=args)
     if fs.version:

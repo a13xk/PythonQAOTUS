@@ -15,16 +15,19 @@ class FileSystemInfo:
         self.process_id: int = cli_arguments.process_id
         self.directory: str = cli_arguments.list_files
         self.show_kernel_release: bool = cli_arguments.show_kernel_release
+        self.show_os_version: bool = cli_arguments.show_os_version
 
         self.res_all_processes: str = ""
         self.res_process: str = ""
         self.res_kernel_release: str = ""
+        self.res_os_version: str = ""
     #
 
     def __del__(self):
         self.res_all_processes = ""
         self.res_process = ""
         self.res_kernel_release = ""
+        self.res_os_version = ""
     #
 
     def print_version(self):
@@ -116,6 +119,21 @@ class FileSystemInfo:
         print("=== END ===\n")
         exit()
     #
+
+    def print_os_version(self):
+        """
+        Print Linux OS version
+        """
+        self.res_os_version = self.run_command_in_shell(command_args=[
+            "lsb_release", "-d", "|",
+            "awk", "'{$1=\"\"; print $0}'", "|",
+            "awk", "'{$1=$1};1'"
+        ])
+        print("=== Linux OS version ===")
+        print(self.res_os_version)
+        print("=== END ===\n")
+        exit()
+    #
 #
 
 
@@ -156,6 +174,11 @@ if __name__ == '__main__':
         action="store_true",
         help="show Linux kernel version"
     )
+    parser.add_argument(
+        "--show-os-version",
+        action="store_true",
+        help="show Linux OS version"
+    )
 
     args = parser.parse_args()
 
@@ -175,4 +198,6 @@ if __name__ == '__main__':
         fs.print_files_in_directory()
     if fs.show_kernel_release:
         fs.print_kernel_release()
+    if fs.show_os_version:
+        fs.print_os_version()
 #

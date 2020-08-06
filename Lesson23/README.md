@@ -31,25 +31,25 @@ sudo ln -s "$(pwd)/file_system_info.py" /usr/local/bin/file_system_info
 
 1. Список всех процессов
     ```bash
-   ./file_system_info.py --show-all-processes
+   file_system_info --show-all-processes
     ```
 2. Информацию о конкретном процессе
     ```bash
-   ./file_system_info.py --process-id PID
+   file_system_info --process-id PID
    ```
 3. Список в файлов в директории (указать директорию)
     ```bash
-   ./file_system_info.py --list-files DIR
+   file_system_info --list-files DIR
     ```
 4. Текущую директорию и список в файлов в ней
     ```bash
-   ./file_system_info.py --list-files
+   file_system_info --list-files
     ```
 5. Версию ядра
     ```bash
-   ./file_system_info.py --show-kernel-release
+   file_system_info --show-kernel-release
     ```
 6. Версию операционной системы
     ```bash
-   ./file_system_info.py --show-os-version
+   file_system_info --show-os-version
     ```

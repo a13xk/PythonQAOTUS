@@ -105,7 +105,7 @@ class FileSystemInfo:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        formatter_class=argparse.RawTextHelpFormatter,
+        formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=27),
         prog="file_system_info",
         description="Script interacting with Linux file system and process management"
     )

@@ -19,3 +19,37 @@
 
 ## Решение
 
+Файл `file_system_info.py` сделан исполняемым, имеет встроенную справку (реализована через модуль argparse), 
+может вызываться напрямую из коммандной строки:
+```bash
+./file_system_info.py --help
+```
+При желании, можно создать символическую ссылку и вызывать скрипт из любой папки:
+```bash
+sudo ln -s "$(pwd)/file_system_info.py" /usr/local/bin/file_system_info
+```
+
+1. Список всех процессов
+    ```bash
+   ./file_system_info.py --show-all-processes
+    ```
+2. Информацию о конкретном процессе
+    ```bash
+   ./file_system_info.py --process-id PID
+   ```
+3. Список в файлов в директории (указать директорию)
+    ```bash
+   ./file_system_info.py --list-files DIR
+    ```
+4. Текущую директорию и список в файлов в ней
+    ```bash
+   ./file_system_info.py --list-files
+    ```
+5. Версию ядра
+    ```bash
+   ./file_system_info.py --show-kernel-release
+    ```
+6. Версию операционной системы
+    ```bash
+   ./file_system_info.py --show-os-version
+    ```

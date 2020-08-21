@@ -15,10 +15,14 @@ WORKDIR ./API_tests
 # Install requirements
 RUN python3.8 -m venv venv
 RUN venv/bin/pip install --upgrade pip
-RUN venv/bin/pip install pytest requests
+RUN venv/bin/pip install pytest requests Cerberus jsonschema
 
 # Copy tests
-COPY ./*.py ./
+COPY ./REST_service_1/*.py ./REST_service_1/
+COPY ./REST_service_2/*.py ./REST_service_2/
+COPY ./REST_service_3/*.py ./REST_service_3/
 
 # Run tests
-CMD venv/bin/python3 -m pytest -v
+CMD venv/bin/python3 -m pytest ./REST_service_1 -v ; \
+    venv/bin/python3 -m pytest ./REST_service_2 -v ; \
+    venv/bin/python3 -m pytest ./REST_service_3 -v
